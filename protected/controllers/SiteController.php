@@ -1,0 +1,174 @@
+<?php
+
+class SiteController extends Controller
+{
+	public $defaultAction = 'login';	
+	/**
+	 * Declares class-based actions.
+	 */
+	public function actions()
+	{
+		return array(
+			// captcha action renders the CAPTCHA image displayed on the contact page
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			// page action renders "static" pages stored under 'protected/views/site/pages'
+			// They can be accessed via: index.php?r=site/page&view=FileName
+			'page'=>array(
+				'class'=>'CViewAction',
+			),
+		);
+	}
+
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionIndex()
+	{
+		// renders the view file 'protected/views/site/index.php'
+		// using the default layout 'protected/views/layouts/main.php'
+		$this->render('index');
+	}
+
+	/**
+	 * This is the action to handle external exceptions.
+	 */
+	public function actionError()
+	{
+		if($error=Yii::app()->errorHandler->error)
+		{
+			if(Yii::app()->request->isAjaxRequest)
+				echo $error['message'];
+			else
+				$this->render('error', $error);
+		}
+	}
+
+	/**
+	 * Displays the contact page
+	 */
+	public function actionContact()
+	{
+		$model=new ContactForm;
+		if(isset($_POST['ContactForm']))
+		{
+			$model->attributes=$_POST['ContactForm'];
+			if($model->validate())
+			{
+				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
+				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
+				$headers="From: $name <{$model->email}>\r\n".
+					"Reply-To: {$model->email}\r\n".
+					"MIME-Version: 1.0\r\n".
+					"Content-type: text/plain; charset=UTF-8";
+
+				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
+				Yii::app()->user->setFlash('contact','Vă mulțumim că ne-ați contactat. Vă vom răspunde cât mai repede posibil.');
+				$this->refresh();
+			}
+		}
+		$this->render('contact',array('model'=>$model));
+	}
+
+	/**
+	 * Displays the login page
+	 */
+	public function actionLogin()
+	{
+		if(!Yii::app()->user->isGuest)
+		{
+			$this->redirect(Yii::app()->homeUrl);
+		}
+		
+		$model=new LoginForm;
+
+		// if it is ajax validation request
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+
+		// collect user input data
+		if(isset($_POST['LoginForm']))
+		{
+			$model->attributes=$_POST['LoginForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate() && $model->login())
+				$this->redirect(Yii::app()->user->returnUrl);
+		}
+		// display the login form
+		$this->render('login',array('model'=>$model));
+	}
+
+	/**
+	 * Logs out the current user and redirect to homepage.
+	 */
+	public function actionLogout()
+	{
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->homeUrl);
+	}
+	
+	public function actionShowLog()
+	{
+		echo "Logged Messages:<br><br>";
+		var_dump(Yii::getLogger()->getLogs());
+	}
+		/**
+	 * Displays the adress page
+	 */
+	public function actionZoomAddress($id)
+	{
+		
+		$model=new Adresa;
+		
+		$client = Client::model()->findbyPk($id);
+		$adresa = $client->adresa;
+		$model->_cod_postal = $client->cod_postal;
+		$adresa_arr = explode (',',$adresa);
+		foreach ($adresa_arr as $adr){
+			if (strpos($adr, 'str.') !== false)
+				$model->strada = trim(substr($adr, strpos($adr, 'str.')+4, 100));
+			if (strpos($adr, 'nr.') !== false)
+				$model->numar = trim(substr($adr, strpos($adr, 'nr.')+3, 5));
+			if (strpos($adr, 'bl.') !== false)
+				$model->bloc = trim(substr($adr, strpos($adr, 'bl.')+3, 5));
+		if (strpos($adr, 'sc.') !== false)
+				$model->scara = trim(substr($adr, strpos($adr, 'sc.')+3, 5));
+		if (strpos($adr, 'et.') !== false)
+				$model->etaj = trim(substr($adr, strpos($adr, 'et.')+3, 5));
+		if (strpos($adr, 'ap.') !== false)
+				$model->apartament = trim(substr($adr, strpos($adr, 'ap.')+3, 5));		
+		}
+
+		// collect user input data
+		if(isset($_POST['Adresa']))
+		{
+			$model->attributes=$_POST['Adresa'];
+			$model->localitate = $model->getLocalitateText($model->_cod_postal);
+			$client->adresa = 'str. '.$model->strada.', nr.'.$model->numar;
+			if ($model->bloc)
+				$client->adresa .= ', bl.'.$model->bloc;
+			if ($model->scara)
+				$client->adresa .= ', sc.'.$model->scara;
+			if ($model->etaj)
+				$client->adresa .= ', et.'.$model->etaj;
+			if ($model->apartament)
+				$client->adresa .= ', ap.'.$model->apartament;
+			$client->adresa = $model->localitate.', '.$client->adresa;
+			$client->cod_postal = $model->_cod_postal;
+//			Yii::trace("loc: ".$client->adresa, "application.controllers.SiteController");			
+
+			if ($client->save()) {
+				Yii::trace("loc: ".$model->localitate, "application.controllers.SiteController");			
+				$this->redirect(array('client/update','id'=>$id));
+			}			
+		}
+		// display the adress form
+		$this->render('zoomaddress',array('model'=>$model));
+	}
+}

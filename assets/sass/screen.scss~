@@ -1,0 +1,31 @@
+
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/utilities";
+
+/*@import "atoms";
+@import "molecules";
+@import "organisms";
+
+@import "structures";
+@import "themes";*/
+
+.span-5 {
+	width: 25%;
+}
+
+.span-19 {
+	width: 75%;
+}
+
+.last {
+	margin: 0;
+}
+
+.column,
+@for $i from 1 through 24 {
+	.span-#{$i} {
+			float:left;
+			margin-right:1em;
+	}
+}
