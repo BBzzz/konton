@@ -21,7 +21,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'tip_doc'); ?>
-		<?php echo $form->textField($model,'tip_doc',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->dropDownList($model,'tip_doc', $model->getTipuriDocumente()); ?>
 		<?php echo $form->error($model,'tip_doc'); ?>
 	</div>
 
@@ -38,12 +38,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fel_op'); ?>
-		<?php echo $form->textField($model,'fel_op'); ?>
-		<?php echo $form->error($model,'fel_op'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'valoare_doc'); ?>
 		<?php echo $form->textField($model,'valoare_doc',array('size'=>10,'maxlength'=>10)); ?>
 		<?php echo $form->error($model,'valoare_doc'); ?>
@@ -51,7 +45,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'loc_tranzactie'); ?>
-		<?php echo $form->textField($model,'loc_tranzactie'); ?>
+	<?php echo $form->dropDownList($model,'loc_tranzactie', $model->getTipuriTranzactie()); ?>
 		<?php echo $form->error($model,'loc_tranzactie'); ?>
 	</div>
 

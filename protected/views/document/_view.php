@@ -25,10 +25,6 @@
 	<?php echo CHtml::encode($data->nr_doc); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fel_op')); ?>:</b>
-	<?php echo CHtml::encode($data->fel_op); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('valoare_doc')); ?>:</b>
 	<?php echo CHtml::encode($data->valoare_doc); ?>
 	<br />

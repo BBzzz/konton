@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Listare documente', 'url'=>array('index')),
-	array('label'=>'Administrare Document', 'url'=>array('admin')),
+	array('label'=>'Administrare documente', 'url'=>array('admin')),
 );
 ?>
 

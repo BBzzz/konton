@@ -110,65 +110,12 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
+		$this->redirect('../'.Yii::app()->homeUrl);
 	}
 	
-	public function actionShowLog()
+/*	public function actionShowLog()
 	{
 		echo "Logged Messages:<br><br>";
 		var_dump(Yii::getLogger()->getLogs());
-	}
-		/**
-	 * Displays the adress page
-	 */
-	public function actionZoomAddress($id)
-	{
-		
-		$model=new Adresa;
-		
-		$client = Client::model()->findbyPk($id);
-		$adresa = $client->adresa;
-		$model->_cod_postal = $client->cod_postal;
-		$adresa_arr = explode (',',$adresa);
-		foreach ($adresa_arr as $adr){
-			if (strpos($adr, 'str.') !== false)
-				$model->strada = trim(substr($adr, strpos($adr, 'str.')+4, 100));
-			if (strpos($adr, 'nr.') !== false)
-				$model->numar = trim(substr($adr, strpos($adr, 'nr.')+3, 5));
-			if (strpos($adr, 'bl.') !== false)
-				$model->bloc = trim(substr($adr, strpos($adr, 'bl.')+3, 5));
-		if (strpos($adr, 'sc.') !== false)
-				$model->scara = trim(substr($adr, strpos($adr, 'sc.')+3, 5));
-		if (strpos($adr, 'et.') !== false)
-				$model->etaj = trim(substr($adr, strpos($adr, 'et.')+3, 5));
-		if (strpos($adr, 'ap.') !== false)
-				$model->apartament = trim(substr($adr, strpos($adr, 'ap.')+3, 5));		
-		}
-
-		// collect user input data
-		if(isset($_POST['Adresa']))
-		{
-			$model->attributes=$_POST['Adresa'];
-			$model->localitate = $model->getLocalitateText($model->_cod_postal);
-			$client->adresa = 'str. '.$model->strada.', nr.'.$model->numar;
-			if ($model->bloc)
-				$client->adresa .= ', bl.'.$model->bloc;
-			if ($model->scara)
-				$client->adresa .= ', sc.'.$model->scara;
-			if ($model->etaj)
-				$client->adresa .= ', et.'.$model->etaj;
-			if ($model->apartament)
-				$client->adresa .= ', ap.'.$model->apartament;
-			$client->adresa = $model->localitate.', '.$client->adresa;
-			$client->cod_postal = $model->_cod_postal;
-//			Yii::trace("loc: ".$client->adresa, "application.controllers.SiteController");			
-
-			if ($client->save()) {
-				Yii::trace("loc: ".$model->localitate, "application.controllers.SiteController");			
-				$this->redirect(array('client/update','id'=>$id));
-			}			
-		}
-		// display the adress form
-		$this->render('zoomaddress',array('model'=>$model));
-	}
+	}*/
 }

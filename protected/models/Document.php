@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is the model class for table "tbl_document".
  *
@@ -9,7 +8,6 @@
  * @property string $tip_doc
  * @property string $data_doc
  * @property string $nr_doc
- * @property integer $fel_op
  * @property string $valoare_doc
  * @property integer $loc_tranzactie
  * @property string $create_time
@@ -19,6 +17,8 @@
  */
 class Document extends KontoActiveRecord
 {
+	const CASA = 0;
+	const BANCA = 1;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,14 +35,12 @@ class Document extends KontoActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tip_doc, data_doc, nr_doc, fel_op, loc_tranzactie', 'required'),
-			array('fel_op, loc_tranzactie, create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
-			array('tip_doc', 'length', 'max'=>6),
+			array('tip_doc, data_doc, nr_doc, loc_tranzactie', 'required'),
+			array('tip_doc,loc_tranzactie, create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
 			array('nr_doc, valoare_doc', 'length', 'max'=>10),
-			array('create_time, update_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, tip_doc, data_doc, nr_doc, fel_op, valoare_doc, loc_tranzactie, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
+			array('id, client_id, tip_doc, data_doc, nr_doc, valoare_doc, loc_tranzactie, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +53,7 @@ class Document extends KontoActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'client' => array(self::BELONGS_TO, 'Client', 'client_id'),
+			'tipdoc' => array(self::BELONGS_TO, 'TipDocumente', 'tip_doc'),
 		);
 	}
 
@@ -69,9 +68,9 @@ class Document extends KontoActiveRecord
 			'tip_doc' => 'Tip document',
 			'data_doc' => 'Data document',
 			'nr_doc' => 'Număr document',
-			'fel_op' => 'Fel operație',
 			'valoare_doc' => 'Valoare document',
 			'loc_tranzactie' => 'Loc Tranzacție',
+			'tiptranzactie' => 'Loc Tranzacție',
 			'create_time' => 'Create Time',
 			'create_user_id' => 'Create User',
 			'update_time' => 'Update Time',
@@ -98,11 +97,10 @@ class Document extends KontoActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('client_id',$this->client_id,true);
-		$criteria->compare('tip_doc',$this->tip_doc,true);
+//		$criteria->compare('client_id',$this->client_id,true);
+//		$criteria->compare('tipdoc',$this->tipdoc,true);
 		$criteria->compare('data_doc',$this->data_doc,true);
 		$criteria->compare('nr_doc',$this->nr_doc,true);
-		$criteria->compare('fel_op',$this->fel_op);
 		$criteria->compare('valoare_doc',$this->valoare_doc,true);
 		$criteria->compare('loc_tranzactie',$this->loc_tranzactie);
 		$criteria->compare('create_time',$this->create_time,true);
@@ -124,5 +122,34 @@ class Document extends KontoActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	
+	public function defaultScope()
+  {
+  	return array(
+    	'condition'=>"client_id=".Yii::app()->user->getState("crtClient"),
+    );
+  }
+
+	public function getTipuriDocumente()
+	{
+		$tip_documente = TipDocumente::model()->findAll();
+    $optionsarray = CHtml::listData($tip_documente, 'id', 'denumire');
+
+		return $optionsarray;
+	}
+
+	public function getTipuriTranzactie()
+	{
+		return array(
+			self::CASA => 'Casa',
+			self::BANCA => 'Banca',
+		);
+	}
+
+	public function getTipTranzactie()
+	{
+		$typeOptions=$this->TipuriTranzactie;
+		return isset($typeOptions[$this->loc_tranzactie]) ? $typeOptions[$this->loc_tranzactie] : "";
 	}
 }

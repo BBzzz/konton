@@ -1,4 +1,9 @@
-<?php /* @var $this Controller */ ?>
+<?php 
+if (Yii::app()->user->hasState("crtClient")) {
+		$client = Client::model()->findByPk(Yii::app()->user->getState("crtClient"));
+		$client_selectat = "<strong>[".$client->denumire."]</strong>";
+}else $client_selectat = "";  
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,16 +28,12 @@
 <div class="container" id="page">
 
 	<header>
-		<h1><?php echo CHtml::encode(Yii::app()->name); ?>.</h1>
+		<h1><?php echo CHtml::encode(Yii::app()->name).".".$client_selectat; ?></h1>
 		<h2>Contabilitate simplă online</h2>
 	</header>
 
 	<nav>
 		<?php
-			if (Yii::app()->user->hasState("crtClient")) {
-				$client = Client::model()->findByPk(Yii::app()->user->getState("crtClient"));
-				$client_selectat = " [".$client->denumire."]";
-			}else $client_selectat = ""; 
 			$this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					array('label'=>'Intrare', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),				
@@ -58,7 +59,9 @@
 	<nav>
 		<?php	$this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
-					array('label'=>'Clienți'.$client_selectat, 'url'=>array('/client/admin'), 'visible'=>!Yii::app()->user->isGuest),
+//					array('label'=>'Client: '.$client_selectat, 'url'=>array('/client/view/'.Yii::app()->user->getState("crtClient")), 'visible'=>$client_selectat,),
+					array('label'=>'Clienți', 'url'=>array('/client/admin')),
+					array('label'=>'Tipuri de documente', 'url'=>array('/tipDocumente/admin')),
 			),
 		)); ?>
 	</nav>

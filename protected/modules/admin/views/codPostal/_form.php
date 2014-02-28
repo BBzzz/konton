@@ -37,6 +37,12 @@
 		<?php echo $form->error($model,'strada'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'judet'); ?>
+		<?php echo $form->textField($model,'judet',array('size'=>2)); ?>
+		<?php echo $form->error($model,'judet'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

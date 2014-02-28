@@ -1,8 +1,9 @@
 <?php
-/* @var $this ClientController */
-/* @var $model Client */
-/* @var $form CActiveForm */
-//include "site/zoomaddress";
+Yii::app()->clientScript->registerScript('adresa', "
+$('.adresa-button').click(function(){
+	$('.adresa-form').toggle();
+	return false;
+});");
 ?>
 
 <div class="form">
@@ -14,7 +15,7 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
-)); 
+));
 ?>
 
 	<p class="note">Câmpurile denotate cu <span class="required">*</span> sunt obligatorii.</p>
@@ -23,7 +24,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'forma_de_org'); ?>
-		<?php echo $form->dropDownList($model,'forma_de_org',$model->getOptions(1),array('empty' => '(Selectează o formă de organizare')); ?>
+		<?php echo $form->dropDownList($model,'forma_de_org',$model->getOptions(1),array('empty' => 'Selectează o formă de organizare')); ?>
 		<?php echo $form->error($model,'forma_de_org'); ?>
 	</div>
 
@@ -71,13 +72,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'categoria_de_venit'); ?>
-		<?php echo $form->dropDownList($model,'categoria_de_venit',$model->getOptions(2),array('empty' => '(Selectează o categorie de venit')); ?>
+		<?php echo $form->dropDownList($model,'categoria_de_venit',$model->getOptions(2),array('empty' => 'Selectează o categorie de venit')); ?>
 		<?php echo $form->error($model,'categoria_de_venit'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'det_venit_net'); ?>
-		<?php echo $form->dropDownList($model,'det_venit_net',$model->getOptions(3),array('empty' => '(Selectează form determinării venitului')); ?>
+		<?php echo $form->dropDownList($model,'det_venit_net',$model->getOptions(3),array('empty' => 'Selectează forma determinării venitului')); ?>
 		<?php echo $form->error($model,'det_venit_net'); ?>
 	</div>
 
@@ -98,22 +99,71 @@
 		<?php echo $form->textField($model,'prenume',array('size'=>60,'maxlength'=>75)); ?>
 		<?php echo $form->error($model,'prenume'); ?>
 	</div>
+	
+	<div class="adresa-form">
+		<div class="row">
+			<?php echo $form->labelEx($model,'cod_postal'); ?>
+			<?php echo $form->textField($model,'cod_postal',array('size'=>6)); ?>
+			<?php echo $form->error($model,'cod_postal'); ?>
+		</div>
 
+		<div class="row">
+			<?php echo $form->labelEx($model,'adresa'); ?>
+			<?php echo $form->textField($model,'adresa',array('size'=>60,'maxlength'=>200)); ?>
+			<?php echo $form->error($model,'adresa'); ?>
+		</div>
+	</div><!-- adresa-form -->
+	<?php echo CHtml::link('Adresa detaliu','#',array('class'=>'adresa-button')); ?>
+	<div class="adresa-form" style="display:none">
+		<div class="row">
+			<?php echo $form->labelEx($model,'cod_postal'); ?>
+			<?php echo $form->textField($model,'cod_postal',array('size'=>6)); ?>
+			<?php echo $form->error($model,'cod_postal'); ?>
+		</div>
+		<?php if ($model->cod_postal)	{?>
+		<div class="row">
+			<?php echo $form->labelEx($model,'localitate'); ?>
+			<?php echo $model->getLocalitateText($model->cod_postal); ?>
+		</div>
+		<?php }?>
+	
 	<div class="row">
-		<?php echo $form->labelEx($model,'cod_postal'); ?>
-		<?php echo $form->textField($model,'cod_postal',array('size'=>6)); ?>
-		<?php echo $form->error($model,'cod_postal'); ?>
+		<?php echo $form->labelEx($model,'strada'); ?>
+		<?php echo $form->textField($model,'strada',array('size'=>30,'maxlength'=>100)); ?>
+		<?php echo $form->error($model,'strada'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'adresa'); ?>
-		<?php echo $form->textField($model,'adresa',array('size'=>60,'maxlength'=>200)); ?>
-		<?php echo $form->error($model,'adresa'); ?>
+		<?php echo $form->labelEx($model,'numar'); ?>
+		<?php echo $form->textField($model,'numar',array('size'=>5)); ?>
+		<?php echo $form->error($model,'numar'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo CHtml::link('Adresa detaliu', '#', array('onclick'=>'$("#adresa_det").dialog("open"); return false;',));?>
+		<?php echo $form->labelEx($model,'bloc'); ?>
+		<?php echo $form->textField($model,'bloc',array('size'=>5)); ?>
+		<?php echo $form->error($model,'bloc'); ?>
 	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'scara'); ?>
+		<?php echo $form->textField($model,'scara',array('size'=>5)); ?>
+		<?php echo $form->error($model,'scara'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'etaj'); ?>
+		<?php echo $form->textField($model,'etaj',array('size'=>5)); ?>
+		<?php echo $form->error($model,'etaj'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'apartament'); ?>
+		<?php echo $form->textField($model,'apartament',array('size'=>5)); ?>
+		<?php echo $form->error($model,'apartament'); ?>
+	</div>
+
+	</div><!-- adresa-form -->
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'telefon'); ?>

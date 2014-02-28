@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Document', 'url'=>array('index')),
-	array('label'=>'Create Document', 'url'=>array('create')),
-	array('label'=>'Update Document', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Document', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Document', 'url'=>array('admin')),
+	array('label'=>'Listare documente', 'url'=>array('index')),
+	array('label'=>'Creare document', 'url'=>array('create')),
+	array('label'=>'Modificare Document', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Ștergere document', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Administrare Document', 'url'=>array('admin')),
 );
 ?>
 
@@ -23,15 +23,17 @@ $this->menu=array(
 	'attributes'=>array(
 /*		'id',
 		'client_id',*/
-		'tip_doc',
+		array(
+			'name' =>'tip_doc',
+			'value' => CHtml::encode($model->tipdoc->denumire),
+		),
+		'nr_doc',
 		array(
 			'name' =>'data_doc',
 			'value' => $this->formatRoDate($model->data_doc),
 		),
-		'nr_doc',
-		'fel_op',
 		'valoare_doc',
-		'loc_tranzactie',
+		'tiptranzactie',
 /*		'create_time',
 		'create_user_id',
 		'update_time',

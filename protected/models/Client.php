@@ -4,6 +4,12 @@
  */
 class Client extends KontoActiveRecord
 {
+	public $strada;
+	public $numar;
+	public $bloc;
+	public $scara;
+	public $etaj;
+	public $apartament;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -51,6 +57,7 @@ class Client extends KontoActiveRecord
 			'cod_fog' => array(self::BELONGS_TO, 'CoduriUzuale', 'forma_de_org'),
 			'cod_cdv' => array(self::BELONGS_TO, 'CoduriUzuale', 'categoria_de_venit'),
 			'cod_dvn' => array(self::BELONGS_TO, 'CoduriUzuale', 'det_venit_net'),
+			'cod_post' => array(self::BELONGS_TO,'CodPostal','_cod_postal'),
 		);
 	}
 
@@ -79,6 +86,7 @@ class Client extends KontoActiveRecord
 			'prenume' => 'Prenume',
 			'cod_postal' => 'Cod poștal',
 			'adresa' => 'Adresa',
+			'numar' => 'Număr',
 			'telefon' => 'Telefon',
 			'fax' => 'Fax',
 			'email' => 'E-mail',
@@ -165,7 +173,6 @@ class Client extends KontoActiveRecord
 	public function getCoduriPostale()
 	{
 		$coduri_post = CodPostal::model()->findAll();
-//Yii::trace("codpost: ".$coduri_post, "application.models.Client");
     $optionsarray = CHtml::listData($coduri_post, 'id', 'cod_postal');
 
 		return $optionsarray;
@@ -182,5 +189,14 @@ class Client extends KontoActiveRecord
 	{
 		$numele = $this->nume." ".$this->prenume;
 		return $numele;
+	}
+
+	public function getLocalitateText($cod_postal)
+	{
+		$codpostal = CodPostal::model()->find('cod_postal=:cod',array(':cod'=>$cod_postal));
+		if (isset($codpostal))		
+			$localitate = $codpostal->localitate;
+		else $localitate = "Necunoscută";
+		return $localitate;
 	}
 }

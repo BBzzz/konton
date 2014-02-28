@@ -56,6 +56,17 @@ class ClientController extends KontoController
 		if(isset($_POST['Client']))
 		{
 			$model->attributes=$_POST['Client'];
+			$localitate = $model->getLocalitateText($model->cod_postal);
+			$model->adresa = $localitate.', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
+			if ($_POST['Client']['bloc'])
+				$model->adresa .= ', bl.'.$_POST['Client']['bloc'];
+			if ($_POST['Client']['scara'])
+				$model->adresa .= ', sc.'.$_POST['Client']['scara'];
+			if ($_POST['Client']['etaj'])
+				$model->adresa .= ', et.'.$_POST['Client']['etaj'];
+			if ($_POST['Client']['apartament'])
+				$model->adresa .= ', ap.'.$_POST['Client']['apartament'];
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -80,14 +91,23 @@ class ClientController extends KontoController
 		if(isset($_POST['Client']))
 		{
 			if ($_POST['Client']['data_reg_cc'] == '0000-00-00')
-			{
 				$_POST['Client']['data_reg_cc'] = '';			
-			}
+
 			if ($_POST['Client']['data_incetare_activitate'] == '0000-00-00')
-			{
 				$_POST['Client']['data_incetare_activitate'] = '';			
-			}
+
 			$model->attributes=$_POST['Client'];
+			$localitate = $model->getLocalitateText($model->cod_postal);
+			$model->adresa = $localitate.', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
+			if ($_POST['Client']['bloc'])
+				$model->adresa .= ', bl.'.$_POST['Client']['bloc'];
+			if ($_POST['Client']['scara'])
+				$model->adresa .= ', sc.'.$_POST['Client']['scara'];
+			if ($_POST['Client']['etaj'])
+				$model->adresa .= ', et.'.$_POST['Client']['etaj'];
+			if ($_POST['Client']['apartament'])
+				$model->adresa .= ', ap.'.$_POST['Client']['apartament'];
+			
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

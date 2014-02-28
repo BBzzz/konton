@@ -110,14 +110,14 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
+		$this->redirect('../'.Yii::app()->homeUrl);
 	}
 	
-	public function actionShowLog()
+/*	public function actionShowLog()
 	{
 		echo "Logged Messages:<br><br>";
 		var_dump(Yii::getLogger()->getLogs());
-	}
+	}*/
 		/**
 	 * Displays the adress page
 	 */
@@ -161,7 +161,7 @@ class SiteController extends Controller
 				$client->adresa .= ', ap.'.$model->apartament;
 			$client->adresa = $model->localitate.', '.$client->adresa;
 			$client->cod_postal = $model->_cod_postal;
-			Yii::trace("loc: ".$client->adresa, "application.controllers.SiteController");			
+//			Yii::trace("loc: ".$client->adresa, "application.controllers.SiteController");			
 
 			if ($client->save()) {
 				Yii::trace("loc: ".$model->localitate, "application.controllers.SiteController");			

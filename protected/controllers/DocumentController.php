@@ -3,6 +3,28 @@
 class DocumentController extends KontoController
 {
 	/**
+	* @var private property containing the associated Client model instance.
+	*/
+	private $_client = null;
+	/**
+	* Protected method to load the associated Project model class
+	* @project_id the primary identifier of the associated Project
+	* @return object the Project data model based on the primary key
+	*/
+	protected function loadClient($client_id)
+	{
+		//if the project property is null, create it based on input id
+		if($this->_client===null)
+		{
+			$this->_client=Client::model()->findbyPk($client_id);
+			if($this->_client===null)
+			{
+				throw new CHttpException(404,'Clientul nu a fost specificat!');
+			}
+		}
+		return $this->_client;
+	}
+	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -10,6 +32,7 @@ class DocumentController extends KontoController
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
+			'clientContext + create, update, admin, view, index', //check to ensure valid client context
 		);
 	}
 
@@ -142,7 +165,7 @@ class DocumentController extends KontoController
 	{
 		$model=Document::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,'Cumva v-ați rătăcit... Pagina cerută nu există!');
 		return $model;
 	}
 
@@ -157,5 +180,17 @@ class DocumentController extends KontoController
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function filterclientContext($filterChain)
+	{
+		//set the project identifier based on either the GET or POST input
+		//request variables, since we allow both types for our actions
+		$clientId = null;
+		if (Yii::app()->user->hasState("crtClient"))
+			$clientId = Yii::app()->user->getState("crtClient");
+		$this->loadClient($clientId);
+		//complete the running of other filters and execute the requested action
+		$filterChain->run();
 	}
 }

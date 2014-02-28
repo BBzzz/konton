@@ -2,20 +2,14 @@
 /* @var $this DocumentController */
 /* @var $model Document */
 
-$this->breadcrumbs=array(
-	'Documents'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
 $this->menu=array(
-	array('label'=>'List Document', 'url'=>array('index')),
-	array('label'=>'Create Document', 'url'=>array('create')),
-	array('label'=>'View Document', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Document', 'url'=>array('admin')),
+	array('label'=>'Listare documente', 'url'=>array('index')),
+	array('label'=>'Creare document', 'url'=>array('create')),
+	array('label'=>'Vizualizare document', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Administrare Document', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Document <?php echo $model->id; ?></h1>
+<h1>Modificare document #<?php echo $model->nr_doc.'/'.$this->formatRoDate($model->data_doc); ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

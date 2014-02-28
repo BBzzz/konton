@@ -37,11 +37,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'fel_op'); ?>
-		<?php echo $form->textField($model,'fel_op'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'valoare_doc'); ?>
 		<?php echo $form->textField($model,'valoare_doc',array('size'=>10,'maxlength'=>10)); ?>
 	</div>
