@@ -11,6 +11,7 @@ return array(
 	'language' => 'ro',
 	'theme'=>'main',
 	'homeUrl'=>'site/index',
+//	'localeDataPath'=>'protected/i18n/data/',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -71,7 +72,7 @@ return array(
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',
-			'routes'=>array(
+/*			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
@@ -88,7 +89,7 @@ return array(
 					'class'=>'CWebLogRoute',
 				),
 */
-			),
+//			),
 		),
 		'authManager'=>array(
 			'class'=>'CDbAuthManager',

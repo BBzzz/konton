@@ -3,28 +3,6 @@
 class DocumentController extends KontoController
 {
 	/**
-	* @var private property containing the associated Client model instance.
-	*/
-	private $_client = null;
-	/**
-	* Protected method to load the associated Project model class
-	* @project_id the primary identifier of the associated Project
-	* @return object the Project data model based on the primary key
-	*/
-	protected function loadClient($client_id)
-	{
-		//if the project property is null, create it based on input id
-		if($this->_client===null)
-		{
-			$this->_client=Client::model()->findbyPk($client_id);
-			if($this->_client===null)
-			{
-				throw new CHttpException(404,'Clientul nu a fost specificat!');
-			}
-		}
-		return $this->_client;
-	}
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -105,6 +83,7 @@ class DocumentController extends KontoController
 		if(isset($_POST['Document']))
 		{
 			$model->attributes=$_POST['Document'];
+			$model->data_doc = date("Y.m.d",strtotime($model->data_doc));
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -180,17 +159,5 @@ class DocumentController extends KontoController
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-
-	public function filterclientContext($filterChain)
-	{
-		//set the project identifier based on either the GET or POST input
-		//request variables, since we allow both types for our actions
-		$clientId = null;
-		if (Yii::app()->user->hasState("crtClient"))
-			$clientId = Yii::app()->user->getState("crtClient");
-		$this->loadClient($clientId);
-		//complete the running of other filters and execute the requested action
-		$filterChain->run();
 	}
 }

@@ -18,4 +18,39 @@ abstract class KontoActiveRecord extends CActiveRecord
 		}
 		return parent::beforeValidate();
 	}
+	
+	public function getLocalitateText($cod_postal)
+	{
+		$codpostal = CodPostal::model()->find('cod_postal=:cod',array(':cod'=>$cod_postal));
+		if (isset($codpostal))		
+			$localitate = $codpostal->localitate;
+		else $localitate = "Necunoscută";
+		return $localitate;
+	}
+
+	public function getCoduriPostale()
+	{
+		$coduri_post = CodPostal::model()->findAll(array('order'=>'cod_postal'));
+    $optionsarray = CHtml::listData($coduri_post, 'cod_postal', 'cod_postal');
+
+		return $optionsarray;
+	}
+
+	public function getBanci()
+	{
+		$coduri_banca = Banca::model()->findAll(array('order'=>'denumire'));
+    $optionsarray = CHtml::listData($coduri_banca, 'id', 'denumire');
+
+		return $optionsarray;
+	}
+	
+/*	public function getBancaClient($id)
+	{
+		Yii::trace('idxx: '.$id);
+		$codbanca = Banca::model()->findByPk($id);
+    if (isset($codbanca))		
+			$banca = $codbanca->banca;
+		else $banca = "Necunoscută";
+		return $banca;
+	}*/
 }

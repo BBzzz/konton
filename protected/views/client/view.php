@@ -32,7 +32,7 @@ $this->widget('zii.widgets.CDetailView', array(
 		'nr_reg_cc',
 		array(
 			'name' => 'data_reg_cc',
-			'value' => $this->formatRoDate($model->data_reg_cc),
+			'type' => 'date',
 			'visible'=> $this->checkVisible($model->data_reg_cc)
 		),
 		'nr_inreg_cm',
@@ -59,11 +59,11 @@ $this->widget('zii.widgets.CDetailView', array(
 		'cod_iban',
 		array(
 			'name' => 'data_inceput_activitate',
-			'value' => $this->formatRoDate($model->data_inceput_activitate),
+			'type' => 'date',
 		),
 		array(
 			'name' => 'data_incetare_activitate',
-			'value' => $this->formatRoDate($model->data_incetare_activitate),
+			'type' => 'date',
 			'visible'=> $this->checkVisible($model->data_incetare_activitate)
 		),
 	),

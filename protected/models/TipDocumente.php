@@ -6,12 +6,12 @@
  * The followings are the available columns in table 'tbl_tip_documente':
  * @property integer $id
  * @property string $denumire
- * @property integer $fel_op
+ * @property integer $loc_tranzactie
  */
 class TipDocumente extends CActiveRecord
 {
-	const INCASARE = 0;
-	const PLATA = 1;
+	const CASA = 0;
+	const BANCA = 1;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -28,13 +28,12 @@ class TipDocumente extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('denumire, fel_op', 'required'),
-			array('fel_op', 'numerical', 'integerOnly'=>true),
-			array('fel_op', 'length', 'max'=>1),
+			array('denumire, loc_tranzactie', 'required'),
+			array('loc_tranzactie', 'numerical', 'integerOnly'=>true),
 			array('denumire', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, denumire, fel_op', 'safe', 'on'=>'search'),
+			array('id, denumire, loc_tranzactie', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,7 +56,7 @@ class TipDocumente extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'denumire' => 'Denumire',
-			'fel_op' => 'Fel operație',
+			'loc_tranzactie' => 'Loc tranzacție',
 		);
 	}
 
@@ -81,7 +80,7 @@ class TipDocumente extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('denumire',$this->denumire,true);
-		$criteria->compare('fel_op',$this->fel_op);
+		$criteria->compare('loc_tranzactie',$this->loc_tranzactie);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -99,17 +98,17 @@ class TipDocumente extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function getTipuriPlata()
+	public function getTipuriTranzactie()
 	{
 		return array(
-			self::INCASARE => 'Încasare',
-			self::PLATA => 'Plată',
+			self::CASA => 'Casa',
+			self::BANCA => 'Banca',
 		);
 	}
 
-	public function getTipPlata()
+	public function getTipTranzactie()
 	{
-		$typeOptions=$this->TipuriPlata;
-		return isset($typeOptions[$this->fel_op]) ? $typeOptions[$this->fel_op] : "";
+		$typeOptions=$this->TipuriTranzactie;
+		return isset($typeOptions[$this->loc_tranzactie]) ? $typeOptions[$this->loc_tranzactie] : "";
 	}
 }

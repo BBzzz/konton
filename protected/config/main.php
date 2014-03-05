@@ -11,6 +11,7 @@ return array(
 	'language' => 'ro',
 	'theme'=>'main',
 	'homeUrl'=>'site/index',
+//	'localeDataPath'=>'protected/i18n/data/',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -94,6 +95,9 @@ return array(
 			'class'=>'CDbAuthManager',
 			'connectionID'=>'db',
 		),
+		'format' => array(
+        'dateFormat' => 'd.m.Y'
+    )
 	),
 
 	// application-level parameters that can be accessed

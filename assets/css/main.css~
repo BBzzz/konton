@@ -34,13 +34,11 @@ header
 
 footer
 {
-	padding: 10px;
-	margin: 10px 20px;
 	font-size: 0.8em;
 	text-align: center;
 	border-top: 1px solid #C9E0ED;
 	float: left;
-	width: 100%;
+	width: 90%;
 }
 
 #logo
@@ -228,4 +226,23 @@ div.search-form
 .operations li a:hover
 {
 	background: #80CFFF;
+}
+
+.ui-tabs.ui-tabs-panel.grid-view table.items th {
+    background: url("bg.gif") repeat-x scroll left top #FFFFFF;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.ui-tabs.ui-tabs-panel.grid-view table.items th a {
+    color: #EEEEEE;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.ui-tabs.ui-tabs-panel.grid-view table.items th,
+.ui-tabs.ui-tabs-panel.grid-view table.items td {
+    border: 1px solid #FFFFFF;
+    font-size: 0.9em;
+    padding: 0.3em;
 }

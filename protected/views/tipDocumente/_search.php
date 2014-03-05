@@ -22,8 +22,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'fel_op'); ?>
-		<?php echo $form->textField($model,'fel_op'); ?>
+		<?php echo $form->label($model,'loc_tranzactie'); ?>
+		<?php echo $form->textField($model,'loc_tranzactie'); ?>
 	</div>
 
 	<div class="row buttons">

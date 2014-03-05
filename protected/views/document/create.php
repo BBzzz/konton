@@ -1,11 +1,4 @@
 <?php
-/* @var $this DocumentController */
-/* @var $model Document */
-
-$this->breadcrumbs=array(
-	'Documents'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
 	array('label'=>'Listare documente', 'url'=>array('index')),

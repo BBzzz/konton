@@ -27,11 +27,12 @@ class CodPostal extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cod_postal, localitate', 'required'),
+			array('cod_postal, localitate, judet', 'required'),
 			array('cod_postal', 'unique'),
 			array('cod_postal', 'length', 'max'=>6),
 			array('localitate', 'length', 'max'=>100),
 			array('strada', 'length', 'max'=>256),
+			array('judet', 'length', 'max'=>2),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, cod_postal, localitate, strada', 'safe', 'on'=>'search'),
@@ -46,6 +47,7 @@ class CodPostal extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'cod_jud' => array(self::BELONGS_TO, 'Judet', 'judet'),
 		);
 	}
 
@@ -59,6 +61,7 @@ class CodPostal extends CActiveRecord
 			'cod_postal' => 'Cod Postal',
 			'localitate' => 'Localitate',
 			'strada' => 'Strada',
+			'judet' => 'Județ',
 		);
 	}
 
@@ -99,5 +102,14 @@ class CodPostal extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getLocalitateText($cod_postal)
+	{
+		$codpostal = $model->find('cod_postal=:cod',array(':cod'=>$cod_postal));
+		if (isset($codpostal))		
+			$localitate = $codpostal->localitate;
+		else $localitate = "Necunoscută";
+		return $localitate;
 	}
 }

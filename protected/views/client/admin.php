@@ -1,11 +1,4 @@
 <?php
-/* @var $this ClientController */
-/* @var $model Client */
-
-/*$this->breadcrumbs=array(
-	'Clients'=>array('index'),
-	'Manage',
-);*/
 
 $this->menu=array(
 //	array('label'=>'Listare clienți', 'url'=>array('index')),

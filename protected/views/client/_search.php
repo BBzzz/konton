@@ -57,11 +57,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'cod_cas'); ?>
-		<?php echo $form->textField($model,'cod_cas',array('size'=>2,'maxlength'=>2)); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'valoare_capital_s'); ?>
 		<?php echo $form->textField($model,'valoare_capital_s',array('size'=>10,'maxlength'=>10)); ?>
 	</div>

@@ -19,16 +19,9 @@ $this->menu=array(
 		'nr_doc',
 		array(
 			'name' =>'data_doc',
-			'value' => $this->formatRoDate($model->data_doc),
+			'type' => 'date',
 		),
-	
 		'valoare_doc',
-		'tiptranzactie',
-/*		'create_time',
-		'create_user_id',
-		'update_time',
-		'update_user_id',
-		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

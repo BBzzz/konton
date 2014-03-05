@@ -42,11 +42,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'loc_tranzactie'); ?>
-		<?php echo $form->textField($model,'loc_tranzactie'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'create_time'); ?>
 		<?php echo $form->textField($model,'create_time'); ?>
 	</div>

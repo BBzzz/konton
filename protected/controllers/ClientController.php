@@ -22,7 +22,7 @@ class ClientController extends KontoController
 	{
 		return array(
 			array('allow',
-				'actions'=>array('create','update','admin','delete','view','index', 'select'),
+				'actions'=>array('create','update','admin','delete','view','index', 'select', 'aclist','GetLocalitate'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -56,8 +56,7 @@ class ClientController extends KontoController
 		if(isset($_POST['Client']))
 		{
 			$model->attributes=$_POST['Client'];
-			$localitate = $model->getLocalitateText($model->cod_postal);
-			$model->adresa = $localitate.', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
+			$model->adresa = $_POST['Client']['localitate'].', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
 			if ($_POST['Client']['bloc'])
 				$model->adresa .= ', bl.'.$_POST['Client']['bloc'];
 			if ($_POST['Client']['scara'])
@@ -97,8 +96,7 @@ class ClientController extends KontoController
 				$_POST['Client']['data_incetare_activitate'] = '';			
 
 			$model->attributes=$_POST['Client'];
-			$localitate = $model->getLocalitateText($model->cod_postal);
-			$model->adresa = $localitate.', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
+			$model->adresa = $_POST['Client']['localitate'].', str. '.$_POST['Client']['strada'].', nr.'.$_POST['Client']['numar'];
 			if ($_POST['Client']['bloc'])
 				$model->adresa .= ', bl.'.$_POST['Client']['bloc'];
 			if ($_POST['Client']['scara'])
@@ -197,5 +195,29 @@ class ClientController extends KontoController
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actions()
+  {
+    return array(
+      'aclist'=>array(
+        'class'=>'application.extensions.EAutoCompleteAction',
+        'model'=>'CodPostal', //My model's class name
+        'attribute'=>'cod_postal', //The attribute of the model i will search
+      ),
+    );
+	}
+
+	public function actionGetLocalitate()
+	{
+		$cod_postal = $_POST['cp'];
+		$codpostal = CodPostal::model()->find('cod_postal=:cod',array(':cod'=>$cod_postal));
+		$result_arr = array();		
+		if (isset($codpostal)) {
+			$result_arr['localitate'] = $codpostal->localitate;
+			$result_arr['strada'] = $codpostal->strada;
+		}
+
+		echo json_encode($result_arr);		
 	}
 }

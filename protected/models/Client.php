@@ -4,6 +4,7 @@
  */
 class Client extends KontoActiveRecord
 {
+	public $localitate;	
 	public $strada;
 	public $numar;
 	public $bloc;
@@ -33,18 +34,17 @@ class Client extends KontoActiveRecord
 			array('cui', 'length', 'max'=>13),
 			array('nr_reg_cc, nr_inreg_cm, valoare_capital_s', 'length', 'max'=>10),
 			array('cod_caen', 'length', 'max'=>4),
-			array('cod_cas', 'length', 'max'=>2),
 			array('nume, prenume', 'length', 'max'=>75),
 			array('initiala_nume', 'length', 'max'=>1),
 			array('cod_postal', 'length', 'max'=>6),
 			array('adresa', 'length', 'max'=>200),
 			array('telefon, fax', 'length', 'max'=>15),
-			array('cod_iban', 'length', 'max'=>24),
+			array('cod_iban', 'length', 'min'=>24, 'max'=>24),
 			array('data_reg_cc, data_inceput_activitate, data_incetare_activitate', 'type', 'type' => 'date', 'message' => '{attribute}: nu este o dată validă!', 'dateFormat' => 'yyyy-MM-dd'),
 //			array('data_reg_cc, create_time, update_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, forma_de_org, denumire, cui, nr_reg_cc, data_reg_cc, nr_inreg_cm, cod_caen, cod_cas, valoare_capital_s, categoria_de_venit, det_venit_net, nume, initiala_nume, prenume, cod_postal, adresa, telefon, fax, email, cod_banca, cod_iban, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
+			array('id, user_id, forma_de_org, denumire, cui, nr_reg_cc, data_reg_cc, nr_inreg_cm, cod_caen, valoare_capital_s, categoria_de_venit, det_venit_net, nume, initiala_nume, prenume, cod_postal, adresa, telefon, fax, email, cod_banca, cod_iban, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,7 +57,8 @@ class Client extends KontoActiveRecord
 			'cod_fog' => array(self::BELONGS_TO, 'CoduriUzuale', 'forma_de_org'),
 			'cod_cdv' => array(self::BELONGS_TO, 'CoduriUzuale', 'categoria_de_venit'),
 			'cod_dvn' => array(self::BELONGS_TO, 'CoduriUzuale', 'det_venit_net'),
-			'cod_post' => array(self::BELONGS_TO,'CodPostal','_cod_postal'),
+			'cod_post' => array(self::BELONGS_TO,'CodPostal','cod_postal'),
+			'cod_banca' => array(self::BELONGS_TO,'Banca','cod_banca'),
 		);
 	}
 
@@ -77,7 +78,6 @@ class Client extends KontoActiveRecord
 			'data_reg_cc' => 'Data Registru la Camera Comerțului',
 			'nr_inreg_cm' => 'Număr înregistrare la Camera de Muncă',
 			'cod_caen' => 'Cod CAEN',
-			'cod_cas' => 'Cod Casa de Asigurări de Sănătate',
 			'valoare_capital_s' => 'Valoare capital social',
 			'categoria_de_venit' => 'Categoria de venit',
 			'det_venit_net' => 'Determinare venit net',
@@ -124,7 +124,6 @@ class Client extends KontoActiveRecord
 		$criteria->compare('data_reg_cc',$this->data_reg_cc,true);
 		$criteria->compare('nr_inreg_cm',$this->nr_inreg_cm,true);
 		$criteria->compare('cod_caen',$this->cod_caen,true);
-		$criteria->compare('cod_cas',$this->cod_cas,true);
 		$criteria->compare('valoare_capital_s',$this->valoare_capital_s,true);
 		$criteria->compare('categoria_de_venit',$this->categoria_de_venit);
 		$criteria->compare('det_venit_net',$this->det_venit_net);
@@ -169,14 +168,6 @@ class Client extends KontoActiveRecord
 		$optionsarray = CHtml::listData($codeDataProvider->getData(),'id', 'denumire');
 		return $optionsarray;
 	}
-	
-	public function getCoduriPostale()
-	{
-		$coduri_post = CodPostal::model()->findAll();
-    $optionsarray = CHtml::listData($coduri_post, 'id', 'cod_postal');
-
-		return $optionsarray;
-	}
 
 	public function getFormaDeOrganizare()
 	{
@@ -189,14 +180,5 @@ class Client extends KontoActiveRecord
 	{
 		$numele = $this->nume." ".$this->prenume;
 		return $numele;
-	}
-
-	public function getLocalitateText($cod_postal)
-	{
-		$codpostal = CodPostal::model()->find('cod_postal=:cod',array(':cod'=>$cod_postal));
-		if (isset($codpostal))		
-			$localitate = $codpostal->localitate;
-		else $localitate = "Necunoscută";
-		return $localitate;
 	}
 }

@@ -215,3 +215,33 @@ div.sys-message
 	color:#FF330A;
 	border-color:#00849E;
 }
+
+.ui-tabs-panel div.grid-view {
+    padding: 15px 0;
+}
+
+.ui-tabs-panel div.grid-view table.items {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D0E3EF;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ui-tabs-panel div.grid-view table.items th {
+    background: url("bg.gif") repeat-x scroll left top #FFFFFF;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.ui-tabs-panel div.grid-view table.items th a {
+    color: #EEEEEE;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.ui-tabs-panel div.grid-view table.items th,
+.ui-tabs-panel div.grid-view table.items td {
+    border: 1px solid #FFFFFF;
+    font-size: 0.9em;
+    padding: 0.3em;
+}

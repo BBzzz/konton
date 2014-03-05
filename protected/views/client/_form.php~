@@ -3,7 +3,36 @@ Yii::app()->clientScript->registerScript('adresa', "
 $('.adresa-button').click(function(){
 	$('.adresa-form').toggle();
 	return false;
-});");
+});
+$('select#Client_cod_postal').change(function(){
+	sel_val = $('select#Client_cod_postal option:selected').val();
+	$.ajax({
+		type: 'POST',
+		url:'".$this->createUrl('Client/GetLocalitate')."',
+		data:{cp:sel_val},
+		dataType: 'json',
+		success: function(data){
+			$('#localitate').text(data.localitate);
+			var stradaStr = data.strada.trim();
+			var str_pos = stradaStr.toLowerCase().indexOf('strada');
+			if (str_pos >= 0)
+				stradaStr = stradaStr.substr(str_pos+6,stradaStr.length);
+			var nr_pos = stradaStr.indexOf('nr.');
+			if (nr_pos >= 0) {
+				strada = stradaStr.substr(0,nr_pos);
+				numar = stradaStr.substr(nr_pos+4,stradaStr.length);
+			} else {
+			strada = stradaStr;
+			numar = '';
+			}
+			$('#Client_strada').val(strada.trim());
+			$('#Client_numar').val(numar.trim());
+		},
+	})
+	return false;
+});",
+CClientScript::POS_READY
+);
 ?>
 
 <div class="form">
@@ -99,33 +128,34 @@ $('.adresa-button').click(function(){
 		<?php echo $form->textField($model,'prenume',array('size'=>60,'maxlength'=>75)); ?>
 		<?php echo $form->error($model,'prenume'); ?>
 	</div>
+	<?php echo CHtml::link('Dupa adresa/cod postal','#',array('class'=>'adresa-button')); ?>
 	
-	<div class="adresa-form">
+	<div class="adresa-form" style="display:none;">
+		<div class="row">
+			<?php echo $form->labelEx($model,'adresa'); ?>
+			<?php echo $form->textField($model,'adresa',array('size'=>60,'maxlength'=>200,'placeholder' =>'localitate, str.strada, nr.numar (ex: Miercurea Ciuc, str.Narciselor, nr.2)')); ?>
+			<?php echo $form->error($model,'adresa'); ?>
+		</div>
+
 		<div class="row">
 			<?php echo $form->labelEx($model,'cod_postal'); ?>
 			<?php echo $form->textField($model,'cod_postal',array('size'=>6)); ?>
+			<?php echo $form->error($model,'cod_postal'); ?>
+		</div>
+	</div><!-- adresa-form -->
+
+	<div class="adresa-form">
+		<div class="row">
+			<?php echo $form->labelEx($model,'cod_postal'); ?>
+			<?php echo $form->dropDownList($model,'cod_postal',$model->getCoduriPostale(),array('prompt' => 'Selectează un cod poștal')); ?>
 			<?php echo $form->error($model,'cod_postal'); ?>
 		</div>
 
 		<div class="row">
-			<?php echo $form->labelEx($model,'adresa'); ?>
-			<?php echo $form->textField($model,'adresa',array('size'=>60,'maxlength'=>200)); ?>
-			<?php echo $form->error($model,'adresa'); ?>
-		</div>
-	</div><!-- adresa-form -->
-	<?php echo CHtml::link('Adresa detaliu','#',array('class'=>'adresa-button')); ?>
-	<div class="adresa-form" style="display:none">
-		<div class="row">
-			<?php echo $form->labelEx($model,'cod_postal'); ?>
-			<?php echo $form->textField($model,'cod_postal',array('size'=>6)); ?>
-			<?php echo $form->error($model,'cod_postal'); ?>
-		</div>
-		<?php if ($model->cod_postal)	{?>
-		<div class="row">
 			<?php echo $form->labelEx($model,'localitate'); ?>
-			<?php echo $model->getLocalitateText($model->cod_postal); ?>
+			<?php echo $form->hiddenField($model,'localitate'); ?>
+			<span id="localitate"><?php echo $model->getLocalitateText($model->cod_postal)?></span>
 		</div>
-		<?php }?>
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'strada'); ?>
@@ -184,14 +214,8 @@ $('.adresa-button').click(function(){
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'cod_cas'); ?>
-		<?php echo $form->textField($model,'cod_cas',array('size'=>2,'maxlength'=>2)); ?>
-		<?php echo $form->error($model,'cod_cas'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'cod_banca'); ?>
-		<?php echo $form->textField($model,'cod_banca'); ?>
+		<?php echo $form->dropDownList($model,'cod_banca',$model->getBanci(),array('prompt' => 'Selectează o bancă')); ?>
 		<?php echo $form->error($model,'cod_banca'); ?>
 	</div>
 

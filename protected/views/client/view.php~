@@ -7,14 +7,14 @@ if (Yii::app()->user->hasState("crtClient")) {
 	$w_text = 'selectați';
 }
 
-$this->menu=array(
-//	array('label'=>'Listare clienți', 'url'=>array('index')),
-	array('label'=>$label, 'url'=>'#', 'linkOptions'=>array('submit'=>array('select','id'=>$model->id),'confirm'=>'Sunteți sigur că vreți să-l '.$w_text.' acest client?')),
-	array('label'=>'Creare client nou', 'url'=>array('create')),
-	array('label'=>'Modificare client', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Șterge client', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Sunteți sigur că vreți să-l ștergeți acest client?')),
-	array('label'=>'Administrare clienți', 'url'=>array('admin')),
-);
+if ( Yii::app()->authManager->checkAccess("contabil", Yii::app()->user->id))
+	$this->menu=array(
+		array('label'=>$label, 'url'=>'#', 'linkOptions'=>array('submit'=>array('select','id'=>$model->id),'confirm'=>'Sunteți sigur că vreți să-l '.$w_text.' acest client?')),
+		array('label'=>'Creare client nou', 'url'=>array('create')),
+		array('label'=>'Modificare client', 'url'=>array('update', 'id'=>$model->id)),
+		array('label'=>'Șterge client', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Sunteți sigur că vreți să-l ștergeți acest client?')),
+		array('label'=>'Administrare clienți', 'url'=>array('admin')),
+	);
 ?>
 
 <h1>Vizualizare client <strong><?php echo $model->denumire; ?><strong></h1>

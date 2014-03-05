@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Document', 'url'=>array('index')),
-	array('label'=>'Manage Document', 'url'=>array('admin')),
+	array('label'=>'Listare documente', 'url'=>array('index')),
+	array('label'=>'Administrare documente', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Document</h1>
+<h1>Creare document nou</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

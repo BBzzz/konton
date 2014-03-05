@@ -9,16 +9,13 @@
  * @property string $data_doc
  * @property string $nr_doc
  * @property string $valoare_doc
- * @property integer $loc_tranzactie
  * @property string $create_time
  * @property integer $create_user_id
  * @property string $update_time
  * @property integer $update_user_id
  */
-class Document extends KontoActiveRecord
+class Document extends DocumenteActiveRecord
 {
-	const CASA = 0;
-	const BANCA = 1;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,12 +32,12 @@ class Document extends KontoActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tip_doc, data_doc, nr_doc, loc_tranzactie', 'required'),
-			array('tip_doc,loc_tranzactie, create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
+			array('tip_doc, data_doc, nr_doc', 'required'),
+			array('tip_doc, create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
 			array('nr_doc, valoare_doc', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client_id, tip_doc, data_doc, nr_doc, valoare_doc, loc_tranzactie, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
+			array('id, client_id, tip_doc, data_doc, nr_doc, valoare_doc, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,8 +66,6 @@ class Document extends KontoActiveRecord
 			'data_doc' => 'Data document',
 			'nr_doc' => 'Număr document',
 			'valoare_doc' => 'Valoare document',
-			'loc_tranzactie' => 'Loc Tranzacție',
-			'tiptranzactie' => 'Loc Tranzacție',
 			'create_time' => 'Create Time',
 			'create_user_id' => 'Create User',
 			'update_time' => 'Update Time',
@@ -102,7 +97,6 @@ class Document extends KontoActiveRecord
 		$criteria->compare('data_doc',$this->data_doc,true);
 		$criteria->compare('nr_doc',$this->nr_doc,true);
 		$criteria->compare('valoare_doc',$this->valoare_doc,true);
-		$criteria->compare('loc_tranzactie',$this->loc_tranzactie);
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('create_user_id',$this->create_user_id);
 		$criteria->compare('update_time',$this->update_time,true);
@@ -123,13 +117,6 @@ class Document extends KontoActiveRecord
 	{
 		return parent::model($className);
 	}
-	
-	public function defaultScope()
-  {
-  	return array(
-    	'condition'=>"client_id=".Yii::app()->user->getState("crtClient"),
-    );
-  }
 
 	public function getTipuriDocumente()
 	{
@@ -137,19 +124,5 @@ class Document extends KontoActiveRecord
     $optionsarray = CHtml::listData($tip_documente, 'id', 'denumire');
 
 		return $optionsarray;
-	}
-
-	public function getTipuriTranzactie()
-	{
-		return array(
-			self::CASA => 'Casa',
-			self::BANCA => 'Banca',
-		);
-	}
-
-	public function getTipTranzactie()
-	{
-		$typeOptions=$this->TipuriTranzactie;
-		return isset($typeOptions[$this->loc_tranzactie]) ? $typeOptions[$this->loc_tranzactie] : "";
 	}
 }

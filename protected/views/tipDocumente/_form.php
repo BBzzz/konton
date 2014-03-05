@@ -26,9 +26,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fel_op'); ?>
-		<?php echo $form->dropDownList($model,'fel_op', $model->getTipuriPlata()); ?>
-		<?php echo $form->error($model,'fel_op'); ?>
+		<?php echo $form->labelEx($model,'loc_tranzactie'); ?>
+		<?php echo $form->dropDownList($model,'loc_tranzactie', $model->getTipuriTranzactie()); ?>
+		<?php echo $form->error($model,'loc_tranzactie'); ?>
 	</div>
 
 	<div class="row buttons">

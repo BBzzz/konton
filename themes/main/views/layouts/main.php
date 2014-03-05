@@ -42,10 +42,25 @@ if (Yii::app()->user->hasState("crtClient")) {
 						'label'=>'Date client', 
 						'url'=>array('/client/update/'.Yii::app()->user->getState("crtClient")), 
 						'visible'=>Yii::app()->user->hasState("crtClient"),
+					),
+					array(
+						'label'=>'Facturi', 
+						'url'=>array('/factura/admin'), 
+						'visible'=>Yii::app()->user->hasState("crtClient")
 					),				
 					array(
 						'label'=>'Documente', 
 						'url'=>array('/document/admin'), 
+						'visible'=>Yii::app()->user->hasState("crtClient")
+					),
+					array(
+						'label'=>'Parteneri', 
+						'url'=>array('/partener/admin'), 
+						'visible'=>Yii::app()->user->hasState("crtClient")
+					),
+					array(
+						'label'=>'Bănci', 
+						'url'=>array('/banca/admin'), 
 						'visible'=>Yii::app()->user->hasState("crtClient")
 					),				
 					array('label'=>'Despre site', 'url'=>array('/site/index'), 'visible'=>Yii::app()->user->isGuest),
